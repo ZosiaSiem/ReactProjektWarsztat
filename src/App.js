@@ -20,7 +20,7 @@ const useServices = () => {
       { title: 'Diagnostyka komputerowa', description: 'Nowoczesny sprzęt – odczyt błędów, eliminacja problemów.' },
       { title: 'Naprawy mechaniczne', description: 'Silnik, zawieszenie, hamulce – ogarniemy wszystko.' },
       { title: 'Serwis klimatyzacji', description: 'Napełnianie, odgrzybianie, szczelność układu.' },
-      { title: 'Diagnostyka komputerowa', description: 'Nowoczesny sprzęt – odczyt błędów, eliminacja problemów.' },
+      { title: 'Czyszczenie wnętrz', description: 'Kompleksowe czyszcznie samochodów, w pakiecie VIP' },
     ]);
   }, []);
 
@@ -80,8 +80,22 @@ function Home() {
 }
 
 function Profile() {
-  const { user } = useContext(UserContext);
-  return <h2>Witaj, {user}! To jest Twój profil.</h2>;
+  const { userName } = useContext(UserContext);
+  const { userSurname } = useContext(UserContext);
+  const { userPhone } = useContext(UserContext);
+  const { userEmail } = useContext(UserContext);
+  return (
+  <div className="profil-container">
+    <h1>Twój profil</h1><h2>Witaj, {userName}! To jest Twój profil.</h2>;
+        <h1>Twoje dane:</h1>
+        <ul>
+          <li>Imie: {userName}</li>
+          <li>Nazwisko: {userSurname}</li>
+          <li>Numer telefonu: {userPhone}</li>
+          <li>E-mail: {userEmail}</li>
+        </ul>
+        <p>Dziękujemy za przestrzeganie regulaminu. Ułatwia nam to świadczenie usług na najwyższym poziomie!</p>
+      </div>)
 }
 
 function Repairs() {
@@ -169,25 +183,32 @@ function NotFound() {
 }
 
 function App() {
-  const [user] = useState('Jan Kowalski');
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [userName] = useState('Jan');
+  const [userSurname] = useState('Kowalski');
+  const [userPhone] = useState('123 456 789');
+  const [userEmail] = useState('jan@example.com');
+
+<UserContext.Provider value={{ userName, userSurname, userPhone, userEmail }}></UserContext.Provider>
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider value={{ userName, userSurname, userPhone, userEmail }}>
       <Router>
         <div className="App">
-          <Heading />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/repairs" element={<Repairs />} />
-            <Route path="/new" element={<NewVisit />} />
-            <Route path="/regulamin" element={<Regulamin />} />
-            <Route path="/kontakt" element={<Kontakt />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
-        </div>
+  <Heading />
+  
+  <main>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/repairs" element={<Repairs />} />
+      <Route path="/new" element={<NewVisit />} />
+      <Route path="/regulamin" element={<Regulamin />} />
+      <Route path="/kontakt" element={<Kontakt />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </main>
+  <Footer />
+</div>
       </Router>
     </UserContext.Provider>
   );
